@@ -203,6 +203,13 @@ address strong{color:#dddde1;font-size:12px;font-weight:600}
 .form-note a{color:#bec0c8;text-decoration:underline;text-underline-offset:3px}
 .form-submit{width:100%;justify-content:space-between;padding-inline:18px}
 .field-note{font-size:8px;color:#7f8491;margin-top:13px;text-align:center}
+.form-trap{display:none}
+.form-submit:disabled{opacity:.65;cursor:wait;transform:none}
+.form-alternative{margin-top:15px;font-size:10px;color:#aeb2bc}
+.form-status{font-size:11px;line-height:1.85;padding:13px 14px;margin-top:17px;border:1px solid #ffffff25;border-radius:3px;color:#dedfe3;background:#111216;overflow-wrap:anywhere}
+.form-status[data-state=success]{border-color:#5d9e7680;color:#c9e8d2}
+.form-status[data-state=error]{border-color:#ed302d80;color:#f0b2b0}
+.form-status[data-state=pending]{color:#c4c9d2}
 .request-preview{margin-top:25px;padding-top:25px;border-top:1px solid var(--line)}
 .request-preview h4{font-size:18px;letter-spacing:-.5px;line-height:1.5}
 .request-preview>p{color:#a6aab4;font-size:11px;line-height:1.8;margin-top:10px}

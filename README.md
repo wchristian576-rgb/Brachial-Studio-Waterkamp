@@ -7,7 +7,7 @@ Responsive, vollständig neu programmierte Website für das Tonstudio von Christ
 - Home, Studio, Musikproduktion, Recording, Mixing & Mastering, Über mich, Referenzen und Kontakt.
 - Sticky-Navigation mit aktiver Abschnittsmarkierung und zugänglichem Smartphone-Menü.
 - Dezente Animationen mit Berücksichtigung der Systemeinstellung „Bewegung reduzieren“.
-- Anfrageassistent mit Pflichtfeldprüfung, E-Mail-Entwurf, Kopierfunktion und Textdownload.
+- Direkter Formularversand über FormSubmit mit Pflichtfeldprüfung, echtem Serverstatus und alternativem E-Mail-Entwurf.
 - Einmaliges Studio-Soundintro mit Autostartversuch, Stopp-Schalter und manuellem Start bei Autoplay-Sperre.
 - Echte Kontaktdaten, zwei verifizierte Melo-Glow-Veröffentlichungen und ergänzende Informationsseiten.
 - Lokal gespeicherte WebP-Bilder und Schrift; keine externen Player, Analyse-Skripte oder Schriftabfragen.
@@ -21,6 +21,7 @@ brachial-studio/
 ├── style.css
 ├── script.js
 ├── impressum.html
+├── danke.html
 ├── datenschutz.html
 ├── bildnachweise.html
 ├── README.md
@@ -85,11 +86,13 @@ git push -u origin main
 
 ## Kontaktverfahren
 
-Eingetragen ist **wchristian576@gmail.com**. Studioanschrift: **Christian Waterkamp, Am Schmiedeberg 22, 57080 Siegen**. Es wurden keine Telefonnummer, Öffnungszeiten oder Preise erfunden.
+Empfänger ist **wchristian576@gmail.com**. Der Button **Anfrage senden** übermittelt die Angaben über [FormSubmit](https://formsubmit.co/) direkt an die Studioadresse. Ein installiertes Mailprogramm ist dafür nicht nötig. Mit JavaScript bleibt der Besucher auf der Seite; ohne JavaScript wird das Formular per POST an den Dienst übergeben und anschließend zur Seite `danke.html` zurückgeleitet.
 
-Der Button **Anfrage vorbereiten** prüft die Eingaben und erstellt einen sichtbaren Entwurf. **E-Mail-Programm öffnen** übergibt ihn an die Mail-Anwendung des Besuchers. Erst der Besucher versendet dort die Nachricht. Ohne eingerichtete Mail-Anwendung stehen **Text kopieren**, **Als Text speichern** und der direkte E-Mail-Link zur Verfügung. GitHub Pages selbst stellt keinen Formularserver bereit. Bei langen Texten können Mail-Anwendungen die `mailto:`-Länge begrenzen; Kopieren und Textdownload umgehen dies.
+**Einmalige Aktivierung:** Bei der ersten Verwendung schickt FormSubmit eine Bestätigungsmail an die Empfängeradresse. Der Studioinhaber muss darin **Activate Form** auswählen. Erst nach dieser Freischaltung ist die Zustellung eingerichtet. Posteingang und Spamordner prüfen. Es werden keine Zugangsdaten oder API-Schlüssel in der Website gespeichert.
 
-Es gibt keinen geheimen API-Schlüssel, kein Backend und keine Speicherung der Formulardaten durch den Websitecode. Für einen späteren direkten Versand wäre ein separat einzurichtender Formulardienst oder Server nötig; Datenschutzhinweise dann entsprechend aktualisieren.
+Die Website zeigt Erfolg erst nach einer positiven Serverantwort. Bei fehlender Freischaltung, Fehlern oder unbestätigter Übertragung bleiben die Eingaben erhalten. Doppeltes Absenden während einer laufenden Anfrage wird verhindert. Der alternative E-Mail-Entwurf mit Kopieren und Textdownload bleibt verfügbar.
+
+Die Datenschutzhinweise beschreiben den externen Versanddienst. Laut dessen Dokumentation werden Nachrichten für 30 Tage in einem Archiv vorgehalten. Bei einem Wechsel des Formulardienstes sind Empfänger, Endpunkt und Datenschutzhinweise entsprechend anzupassen.
 
 ## Inhalte ändern
 
@@ -103,7 +106,7 @@ Um das Intro auszutauschen, `assets/studio-intro.mp3` ersetzen. Die Lautstärke 
 
 ### Texte und Gestaltung
 
-- Texte, Adresse und E-Mail: in `index.html` und den Informationsseiten bearbeiten. Die Empfängeradresse steht zusätzlich zweimal in `script.js` sowie in den strukturierten Daten im HTML.
+- Texte, Adresse und E-Mail: in `index.html` und den Informationsseiten bearbeiten. Die Empfängeradresse steht zusätzlich in `script.js` und im Formular-Endpunkt sowie in den strukturierten Daten im HTML.
 - Farben, Schriftgrößen und Layout: in `style.css`. Zentrale Farben und Abstände stehen oben in `:root`.
 - Referenzen: in `index.html` die Links und Cover austauschen. Direkte YouTube-Links sind integriert, keine eingebetteten Player.
 - Bilder: im Ordner `assets/` ersetzen und die zugehörigen Alternativtexte anpassen. Das Porträt stammt aus einem Ausschnitt der gelieferten Vorschau; ein separat geliefertes hochauflösendes Original kann jederzeit ohne Layoutänderung eingesetzt werden.
@@ -118,4 +121,4 @@ Um das Intro auszutauschen, `assets/studio-intro.mp3` ersetzen. Die Lautstärke 
 - Manrope: [Google Fonts](https://github.com/google/fonts/tree/main/ofl/manrope), SIL Open Font License; Lizenzdatei liegt bei.
 - `studio-intro.mp3`: vom Auftraggeber bereitgestellte Originaldatei `für homepage.mp3`.
 
-Verwendete Dokumentationsquellen zuletzt geprüft am 15. November 2026. Die Website ist für GitHub Pages vorbereitet; in dieser Arbeit wurde keine öffentliche Veröffentlichung vorgenommen.
+Verwendete Dokumentationsquellen zuletzt geprüft am 15. November 2026. Die Website ist über [GitHub Pages](https://wchristian576-rgb.github.io/Brachial-Studio-Waterkamp/) veröffentlicht.

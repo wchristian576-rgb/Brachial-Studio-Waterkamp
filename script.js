@@ -181,21 +181,29 @@
   const status = document.querySelector('#request-status');
   const output = document.querySelector('#request-text');
   const mailLink = document.querySelector('#request-mailto');
+  const formStatus = document.querySelector('#form-status');
+  const sendButton = form.querySelector('[type="submit"]');
+  const sendLabel = sendButton.querySelector('.submit-label');
+  const fields = [nameField, emailField, serviceField, messageField];
+  let sending = false;
   let currentDraft = '';
 
   document.querySelectorAll('[data-service]').forEach(link => {
     link.addEventListener('click', () => {
+      if (sending) return;
       serviceField.value = link.dataset.service;
       preview.hidden = true;
+      formStatus.hidden = true;
     });
   });
 
-  // A draft only: nothing is sent to a server, stored in localStorage or submitted automatically.
-  form.addEventListener('submit', event => {
-    event.preventDefault();
+  function validateRequest() {
     nameField.setCustomValidity(nameField.value.trim() ? '' : 'Bitte gib deinen Namen ein.');
     messageField.setCustomValidity(messageField.value.trim().length >= 10 ? '' : 'Bitte beschreibe deine Idee mit mindestens 10 Zeichen.');
-    if (!form.reportValidity()) return;
+    return form.reportValidity();
+  }
+
+  function prepareDraft() {
     const name = nameField.value.trim();
     const email = emailField.value.trim();
     const service = serviceField.value;
@@ -204,9 +212,77 @@
     mailLink.href = `mailto:wchristian576@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(currentDraft)}`;
     output.textContent = currentDraft;
     status.textContent = '';
+  }
+
+  function showDraft() {
+    prepareDraft();
     preview.hidden = false;
     document.querySelector('#preview-title').focus({ preventScroll: true });
     preview.scrollIntoView({ behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'nearest' });
+  }
+
+  function showFormStatus(message, state) {
+    formStatus.textContent = message;
+    formStatus.dataset.state = state;
+    formStatus.hidden = false;
+    formStatus.focus({ preventScroll: true });
+  }
+
+  // Only report success after a positive server response. A timeout never clears the input.
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (sending || !validateRequest()) return;
+    if (form.elements.namedItem('_honey').value) return;
+    prepareDraft();
+    const body = new FormData(form);
+    body.set('name', nameField.value.trim());
+    body.set('email', emailField.value.trim());
+    body.set('message', messageField.value.trim());
+    body.set('_subject', `Projektanfrage: ${serviceField.value} – Brachial Studio Waterkamp`);
+    preview.hidden = true;
+    sending = true;
+    sendButton.disabled = true;
+    sendLabel.textContent = 'Wird gesendet …';
+    fields.forEach(field => { field.disabled = true; });
+    showFormStatus('Deine Anfrage wird übermittelt …', 'pending');
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 25000);
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/wchristian576@gmail.com', {
+        method: 'POST',
+        body,
+        headers: { Accept: 'application/json' },
+        credentials: 'omit',
+        signal: controller.signal,
+      });
+      const result = await response.json();
+      const needsActivation = /activate your form|confirm your email|activation (?:email|link)|not (?:yet )?activ(?:e|ated)|needs? activation|check your email/i.test(String(result.message || ''));
+      if (needsActivation) {
+        showFormStatus('Der Direktversand ist noch nicht freigeschaltet. Bitte nutze vorerst den E-Mail-Entwurf unten.', 'error');
+        showDraft();
+      } else if (response.ok && (result.success === true || result.success === 'true')) {
+        showFormStatus('Deine Anfrage wurde erfolgreich übermittelt. Vielen Dank – ich melde mich bei dir!', 'success');
+        form.reset();
+        currentDraft = '';
+        output.textContent = '';
+      } else {
+        throw new Error('Submission was not confirmed.');
+      }
+    } catch {
+      showFormStatus('Der Versand konnte nicht bestätigt werden. Deine Eingaben bleiben erhalten. Bitte versuche es später erneut oder nutze den E-Mail-Entwurf unten.', 'error');
+      showDraft();
+    } finally {
+      window.clearTimeout(timeout);
+      fields.forEach(field => { field.disabled = false; });
+      sendButton.disabled = false;
+      sendLabel.textContent = 'Anfrage senden';
+      sending = false;
+    }
+  });
+
+  document.querySelector('#prepare-email').addEventListener('click', () => {
+    if (sending || !validateRequest()) return;
+    showDraft();
   });
 
   form.addEventListener('input', () => {
@@ -215,6 +291,7 @@
     // Never allow an old draft to be sent after the form has changed.
     preview.hidden = true;
     currentDraft = '';
+    if (!sending) formStatus.hidden = true;
   });
 
   document.querySelector('#copy-request').addEventListener('click', async () => {

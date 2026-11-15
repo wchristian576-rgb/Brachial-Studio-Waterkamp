@@ -2,6 +2,17 @@
 
 Stand: 15. November 2026
 
+## Kontaktformular-Korrektur
+
+Der Kontaktbereich wurde von einer reinen E-Mail-Entwurfsfunktion auf direkten Versand über FormSubmit umgestellt. Die fehlerhafte Option „Musikproduktion“ wurde korrigiert. Datenschutzhinweise und Anleitung beschreiben den tatsächlichen Versanddienst.
+
+- Sechs automatisierte Prüfungen erfolgreich: fehlende Aktivierung, bestätigter Versand, Netzwerkfehler, Serverablehnung, Schutz gegen doppeltes Absenden und ungültige Eingaben.
+- Eine Erfolgsmeldung erscheint nur nach einer positiven Serverantwort. Bei Problemen bleiben die Angaben erhalten und der alternative E-Mail-Entwurf wird angeboten.
+- Im Browser wurden die Pflichtfelder, die auswählbare Musikproduktion und der alternative Entwurf erfolgreich geprüft.
+- Die erste direkte Anfrage an den Dienst bestätigte die notwendige Freischaltung; der Studioinhaber hat die Aktivierung per E-Mail anschließend bestätigt.
+
+Die folgenden Abschnitte dokumentieren zusätzlich die ursprüngliche Prüfung der Website vor dieser Kontaktkorrektur.
+
 ## Umgebung und Umfang
 
 Die Website wurde über einen lokalen HTTP-Server auf `127.0.0.1:4173` im Chromium-basierten Vorschau-Browser geöffnet und visuell geprüft. Die Prüfung der Smartphone-Ansicht erfolgte über Browser-Viewports, nicht auf einem physischen Smartphone.
